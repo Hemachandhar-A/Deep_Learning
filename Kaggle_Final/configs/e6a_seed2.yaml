@@ -1,0 +1,14 @@
+# E6a, second seed (stage 2 of the noise rule, review 19 and 20): identical to e6a_flip_rot90.yaml (flips and 90-degree
+# rotations on, no brightness change) except the training seed (2), as e1b_seed2.yaml is to e1_seed1.yaml.  The run id
+# carries the seed (E6a_r512_lr1e-3_seed2), so the experiment name stays E6a.  Differs from E1 in `experiment`,
+# `augment.flip`, `augment.rot90` and `train.seed`; from e6a_flip_rot90.yaml in `train.seed` only.
+base_config: base.yaml
+experiment: E6a
+
+train:
+  resolution: 512
+  seed: 2
+
+augment:
+  flip: true
+  rot90: true

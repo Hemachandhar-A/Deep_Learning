@@ -1,0 +1,15 @@
+# E4, arm "focal + Dice" (Architecture A4.2 and the E4 row of section 6; decision D5).  The BCE term of the loss becomes the
+# focal-modulated BCE, |y - p| ** gamma times the BCE (losses.py, written for soft targets); the region term stays soft Dice,
+# weights 1 : 1.  Seed 1 like E1.
+# gamma = 2.0 is the usual focal value and the code default; Architecture A4.2 gives NO value ("add focal loss"), DECISIONS.md
+# lists it as an open choice.  Differs from E1 in `experiment`, `loss.bce` and `loss.focal_gamma` only (a test shows it).
+base_config: base.yaml
+experiment: E4a
+
+train:
+  resolution: 512
+  seed: 1
+
+loss:
+  bce: focal
+  focal_gamma: 2.0

@@ -1,0 +1,67 @@
+# Base configuration.  Every value cites its document ID (A = Architecture & Pipeline Decisions, S = Spec & Context)
+# or the Gate 1 decision of the user (D-a ... D-f, 2026-10-12), or is marked "open choice" (the documents are silent;
+# also listed in DECISIONS.md).  Experiment files layer on this one with `base_config: base.yaml` and override only
+# what differs (E1b differs from E1 only in train.seed).
+
+paths:
+  data_root: null        # folder that contains the competition files; located by searching, never hard-coded (A4.8 item 3)
+  work_dir: null         # cache, folds.csv, checkpoints, out-of-fold maps (kept outside the repository and DATA_ROOT)
+  results_dir: results   # metrics.json, config copy, logs: one folder per run
+
+normalisation:           # P1; recomputed from the 707 training images by scripts/prepare_cache.py (matches to 5 decimals)
+  mean: 0.32742
+  std: 0.22230
+
+folds:                   # D-a: decided by the user, fixed before any model result exists
+  n_splits: 5            # A4.1
+  strategy: balanced     # one row per image, label = instrument x number of versions, StratifiedKFold (shuffle on)
+  seed: 42               # D-a
+  file: null             # path of folds.csv (written once by scripts/make_folds.py, never committed: D-b)
+  sha256: null           # expected SHA-256 of folds.csv; a run refuses another file and records hash + scikit-learn version
+
+train:
+  resolution: 512        # E1/E1b arm (A6); 1024 for the M arms
+  batch_size: 8          # 512 px batch 8 = 2.16 GiB with AMP (A4.7, and measured on the RTX 3050)
+  crop_min: null         # 1024 px arm only: random crop of 512..768 px (A2, A4.8 item 1); sides are multiples of 32
+  crop_max: null
+  steps: 7000            # APPROVED budget per fold (reviewer, 2026-10-15; DECISIONS.md "Step budget"): the single place every
+                         # training mode reads.  Measured on a Tesla T4, 512 px, batch 8, AMP, with the loader: 0.2088 s/step
+                         # (p95 0.2101), so 1,440 s / 0.2088 s = 6,896 (A4.3), rounded to 7,000 = 24.4 min per fold.  It
+                         # changes only with the reviewer's written approval.  null refuses to train (A4.3).
+  seed: 1                # training seed; E1 = 1, E1b = 2 (A4.8 item 5)
+
+optim:
+  optimizer: adam        # D-d: Adam, weight decay 0 (EdgeAttNet's setting is the only domain evidence, A4.3)
+  lr: 1.0e-3             # D-e: 1e-3 over 1e-4: lr check, then the lr pair (5 folds, 2 seeds), reviewer 2026-10-18, review 16 (A4.3)
+  weight_decay: 0.0      # D-d
+  warmup_steps: 200      # A4.3: linear warm-up, then cosine decay to zero
+  amp: true              # A4.3
+
+augment:                 # E6 arms; D-c: default is NONE for E1 and E1b (the "none" arm of E6 is the baseline)
+  flip: false
+  rot90: false
+  brightness: null       # [0.9, 1.1] when on (A4.4)
+
+model:                   # D1; E7 varies these
+  arch: Unet
+  encoder: resnet34
+  encoder_weights: imagenet
+  in_channels: 1
+  classes: 1
+
+loss:                    # D5, A4.2
+  bce: bce               # "focal" is an E4 arm
+  region: dice           # "tversky" is an E4 arm
+  w_bce: 1.0
+  w_region: 1.0
+  smooth: 1.0
+
+postprocess:             # A5.2; the model-comparison setting of A6: no filters, no disc masking
+  threshold: 0.5         # compared at 0.30 / 0.40 / 0.50 (A6)
+  hysteresis: null
+  closing_radius: 0
+  fill_holes: true
+  r_max: null            # D-f: every disc-based option stays off until the disc recipe is fixed and re-checked
+  a_min: 0
+  c_min: 0.0
+  c_limb: null           # D-f: off

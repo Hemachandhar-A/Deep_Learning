@@ -1,0 +1,20 @@
+# E4, arm "Tversky" (Architecture A4.2 and the E4 row of section 6; decision D5).  The region term of the loss becomes the
+# Tversky loss, 1 - (tp + s) / (tp + alpha fp + beta fn + s), in place of soft Dice; BCE stays, weights 1 : 1.  Seed 1 like E1.
+#
+# THE VALUES BELOW ARE A PROPOSAL, NOT FROM THE DOCUMENTS: Architecture A4.2 names the arm ("Tversky loss") and gives no alpha or
+# beta; DECISIONS.md lists them as open choices.  alpha = beta = 0.5 (the code default) is NOT an arm: it is the Dice loss
+# (the two differ by about 1e-6 on a batch, derived and checked in the Phase 3a report).  The proposal weights false
+# positives (alpha 0.7) above false negatives (beta 0.3) because the out-of-fold numbers are limited by precision
+# (E1: 11,415 false positives against 4,139 false negatives).  The reviewer sets or confirms the pair before any run.
+# Differs from E1 in `experiment`, `loss.region`, `loss.tversky_alpha` and `loss.tversky_beta` only (a test shows it).
+base_config: base.yaml
+experiment: E4b
+
+train:
+  resolution: 512
+  seed: 1
+
+loss:
+  region: tversky
+  tversky_alpha: 0.7
+  tversky_beta: 0.3

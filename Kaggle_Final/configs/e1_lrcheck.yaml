@@ -1,0 +1,31 @@
+# Learning-rate check inside E1 (protocol Q12: the reviewer's recommendation of 2026-10-12, confirmed by the user on
+# 2026-10-13).  Run BEFORE E1 and E1b, so that a change of lr does not force a rerun of both.
+#
+# What runs (fold 0 only, the full E1 schedule; every run is one process of `scripts/train.py --fold 0`):
+#   lr 3e-5, 3e-4, 1e-3 with training seed 1, and the default 1e-4 with training seeds 1 and 2 (the noise estimate).
+# The step count is the E1 budget `train.steps` of base.yaml (7,000, approved 2026-10-15 after the step time was measured
+# with the loader on a T4; this file does not set it, so there is one place only).  A shortened schedule is NOT used: it
+# favours a larger lr by construction (the Gate 1 overfit runs: 1e-3 fitted in 500 steps, 1e-4 did not in 1,500), so it
+# would not answer the question at the full budget.
+base_config: base.yaml
+experiment: E1lr
+
+train:
+  resolution: 512
+  seed: 1
+
+lr_check:
+  fold: 0
+  default_lr: 1.0e-4
+  runs:                      # (lr, training seed); the order is the order of the plan printed by scripts/lr_check.py
+    - {lr: 1.0e-4, seed: 1}
+    - {lr: 1.0e-4, seed: 2}
+    - {lr: 3.0e-5, seed: 1}
+    - {lr: 3.0e-4, seed: 1}
+    - {lr: 1.0e-3, seed: 1}
+  score: "out-of-fold PQ on fold 0, best of t in {0.30, 0.40, 0.50}, the same rule for every run, no filters, no disc"
+  decision_rule: >-
+    Written before the runs: adopt another lr only if its fold-0 PQ exceeds the default's seed-1 PQ by more than the
+    absolute difference between the default's seed-1 and seed-2 PQ; otherwise keep 1e-4.
+  limit: >-
+    One fold and two seeds give one noise estimate; "inside the noise" means not distinguishable, not equal.

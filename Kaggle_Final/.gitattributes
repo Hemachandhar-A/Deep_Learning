@@ -1,0 +1,2 @@
+# Store and check out text files with LF on every platform (the repo is edited on Windows and read on Linux).
+* text=auto eol=lf

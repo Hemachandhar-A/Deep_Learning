@@ -1,0 +1,11 @@
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = [
+    "data: needs the competition data (set FILAMENT_DATA_ROOT or --data-root)",
+    "gpu: needs a CUDA GPU",
+    "net: needs Internet (downloads ImageNet weights)",
+]
+filterwarnings = [
+    "ignore:__array__ implementation doesn't accept a copy keyword:DeprecationWarning",
+]

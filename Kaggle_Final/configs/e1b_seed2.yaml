@@ -1,0 +1,8 @@
+# E1b: identical to E1 except the training seed (A4.8 item 5); the noise floor of A6.  No learning-rate grid: it runs
+# the optimiser lr of base.yaml only (1e-3 when E1 and E1b first ran; see DECISIONS.md).
+base_config: base.yaml
+experiment: E1b
+
+train:
+  resolution: 512
+  seed: 2

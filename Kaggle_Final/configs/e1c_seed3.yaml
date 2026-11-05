@@ -1,0 +1,9 @@
+# E1c: identical to E1 except the training seed (3): a third baseline seed at the chosen lr (1e-3, base.yaml).  It improves
+# the noise estimate of the restated rule (review 16, section 6) and is a member of the later ensemble.  Differs from
+# E1 in `experiment` and `train.seed` only (a test shows it).
+base_config: base.yaml
+experiment: E1c
+
+train:
+  resolution: 512
+  seed: 3

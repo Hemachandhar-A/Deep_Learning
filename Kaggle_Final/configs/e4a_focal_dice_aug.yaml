@@ -1,0 +1,18 @@
+# E4a on top of E6a (review 20, decision 3): the arm of e4a_focal_dice.yaml (focal-modulated BCE, gamma 2.0, soft Dice,
+# weights 1 : 1) with the flips and 90-degree rotations of e6a_flip_rot90.yaml switched on, because the final model will have
+# them on if E6a is adopted.  Seed 1.  To be compared with E6a (the mean of its two seeds), not with E1.
+# Differs from e6a_flip_rot90.yaml in `experiment`, `loss.bce` and `loss.focal_gamma` only.
+base_config: base.yaml
+experiment: E4a_aug
+
+train:
+  resolution: 512
+  seed: 1
+
+loss:
+  bce: focal
+  focal_gamma: 2.0
+
+augment:
+  flip: true
+  rot90: true

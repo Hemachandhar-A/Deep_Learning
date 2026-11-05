@@ -1,0 +1,19 @@
+# E4b on top of E6a (review 20, decision 3): the arm of e4b_tversky.yaml (Tversky region term, alpha 0.7 on false positives,
+# beta 0.3 on false negatives, decided in review 17 / Q17; BCE stays, weights 1 : 1) with the flips and 90-degree rotations of
+# e6a_flip_rot90.yaml switched on.  Seed 1.  To be compared with E6a (the mean of its two seeds), not with E1.
+# Differs from e6a_flip_rot90.yaml in `experiment`, `loss.region`, `loss.tversky_alpha` and `loss.tversky_beta` only.
+base_config: base.yaml
+experiment: E4b_aug
+
+train:
+  resolution: 512
+  seed: 1
+
+loss:
+  region: tversky
+  tversky_alpha: 0.7
+  tversky_beta: 0.3
+
+augment:
+  flip: true
+  rot90: true

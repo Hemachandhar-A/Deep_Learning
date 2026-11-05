@@ -1,0 +1,3 @@
+tests/host_scoring_reference.py is derived from the "Self_Evaluation_Notebook" of the Solar Filament Segmentation
+Challenge 2026 (https://www.kaggle.com/code/azimahmadzadeh/self-evaluation-notebook, version 6 of 6), released under the
+Apache License 2.0 (third_party/LICENSE-Apache-2.0.txt); it was changed as stated in the header of that file.

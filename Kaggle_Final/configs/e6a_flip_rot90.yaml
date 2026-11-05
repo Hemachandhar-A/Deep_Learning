@@ -1,0 +1,14 @@
+# E6, arm "flips and 90-degree rotations" (Architecture section 4.4 and the E6 row of section 6): the augmentation switches
+# of base.yaml turned on, seed 1 like E1.  Horizontal and vertical flips (independent coins) and a random multiple of
+# 90 degrees; no brightness change.  Differs from E1 in `experiment`, `augment.flip` and `augment.rot90` only (a test
+# shows it).  Whether mirrored images hurt is unmeasured (4.4).
+base_config: base.yaml
+experiment: E6a
+
+train:
+  resolution: 512
+  seed: 1
+
+augment:
+  flip: true
+  rot90: true

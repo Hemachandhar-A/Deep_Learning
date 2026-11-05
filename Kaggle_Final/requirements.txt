@@ -1,0 +1,23 @@
+# Exact versions of the environment in which the Phase 1 tests ran (Windows 11, Python 3.13.1, CPU + RTX 3050).
+# Source: package metadata printed by scripts/record_environment.py (see E0_REPORT.md, test 13).
+# Observed on Kaggle (2026-10-12, Arch section 4.7): torch 2.11.0+cu128 and segmentation-models-pytorch 0.5.0
+# (installed with `pip install -q segmentation-models-pytorch==0.5.0`).  The other Kaggle versions are not yet known;
+# the first Kaggle session prints them (Phase 2).  Nothing here is guessed.
+torch==2.10.0            # local build 2.10.0+cu126; on Kaggle keep the preinstalled torch
+torchvision==0.25.0      # local build 0.25.0+cu126
+segmentation-models-pytorch==0.5.0
+timm==1.0.30
+huggingface_hub==1.4.1   # SMP downloads the ResNet34 ImageNet weights from smp-hub/resnet34.imagenet
+safetensors==0.7.0
+pycocotools==2.0.11
+numpy==2.2.2
+scipy==1.15.1
+opencv-python-headless==4.13.0.90
+scikit-learn==1.6.1
+pillow==11.1.0
+PyYAML==6.0.2
+tqdm==4.67.1
+matplotlib==3.10.0
+# development only
+pytest==8.2.2
+pandas==2.2.3        # tests/host_scoring_reference.py (the host's scorer) uses pandas and torch

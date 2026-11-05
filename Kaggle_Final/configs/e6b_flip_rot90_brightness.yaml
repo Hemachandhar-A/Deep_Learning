@@ -1,0 +1,15 @@
+# E6, arm "plus brightness scaling" (Architecture section 4.4 and the E6 row of section 6): the arm of e6a_flip_rot90.yaml plus
+# a random brightness factor in [0.9, 1.1] (A4.4: multiplication leaves a filament's relative dip unchanged; no gamma or
+# contrast changes).  Seed 1 like E1.  Differs from E1 in `experiment`, `augment.flip`, `augment.rot90` and
+# `augment.brightness` only (a test shows it).
+base_config: base.yaml
+experiment: E6b
+
+train:
+  resolution: 512
+  seed: 1
+
+augment:
+  flip: true
+  rot90: true
+  brightness: [0.9, 1.1]

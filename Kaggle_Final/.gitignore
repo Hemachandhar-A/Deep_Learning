@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+.venv/
+venv/
+
+# Competition data, caches, predictions, checkpoints: never commit (data licence CC BY-NC 4.0; see DECISIONS.md)
+*.npy
+*.npz
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.jpeg
+*.jpg
+folds.csv
+folds*.provenance.json
+submission*.csv
+work/
+cache/
+data/
+# Per-run results: keep metrics.json / config copy / logs, drop bulky maps
+results/**/maps/
+results/**/checkpoints/
+results/**/*.png
+
+# Per-machine overrides (paths, expected folds hash): never committed
+configs/local*.yaml
+
+# Secrets: never
+kaggle.json
+.env
+*.token
+work_*/
